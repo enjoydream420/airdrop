@@ -1,0 +1,24 @@
+{
+  "name": "gamut-ropsten",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ enjoydream420/gamut-ropsten",
+    "create-local": "graph create --node http://localhost:8020/ enjoydream420/gamut-ropsten",
+    "remove-local": "graph remove --node http://localhost:8020/ enjoydream420/gamut-ropsten",
+    "deploy-local": "graph deploy  --access-token 342da72ccae8751f3b59a0a3b48129ed --node http://localhost:8020/ --ipfs http://localhost:5001 enjoydream420/gamut-ropsten",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.35.0",
+    "@graphprotocol/graph-ts": "0.28.1",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-prettier": "^6.1.0",
+    "prettier": "^1.18.2",
+    "typescript": "^3.5.2"
+  },
+  "devDependencies": { "matchstick-as": "0.5.0" }
+}
