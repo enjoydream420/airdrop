@@ -33,7 +33,7 @@ function mergeUsers(users) {
 const main = async () => {
     const data = fs.readFileSync(`./mergeDataWithOtherDex/dexUsersList.json`, {encoding:'utf8', flag:'r'})
     const dexUsers = JSON.parse(data)
-    const kavaData = fs.readFileSync("./fetched/UsersList.txt", {encoding: 'utf-8'})
+    const kavaData = fs.readFileSync("./fetched/SortedUsersList.txt", {encoding: 'utf-8'})
     const kavaUsers = kavaData.split(/\r?\n/)
     kavaUsers.pop()
     const totalUsers = mergeUsers([dexUsers, kavaUsers])
