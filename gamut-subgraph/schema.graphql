@@ -411,7 +411,7 @@ type SwapEvent @entity {
   transaction: Bytes!
 }
 
-type PoolWeight @entity {
+type WeightBalanceData @entity {
   id: ID!
   timestamp: BigInt!
   weight0: BigDecimal!
