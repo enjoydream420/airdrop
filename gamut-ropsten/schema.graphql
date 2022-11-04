@@ -410,3 +410,23 @@ type SwapEvent @entity {
   # transaction hash
   transaction: Bytes!
 }
+
+type PoolWeight @entity {
+  id: ID!
+  timestamp: BigInt!
+  weight0: BigDecimal!
+  weight1: BigDecimal!
+  pool: Pool!
+  token0: Token!
+  token1: Token!
+}
+
+type PoolTokensPrice @entity {
+  id: ID!
+  timestamp: BigInt!
+  token0Price: BigDecimal!
+  token1Price: BigDecimal!
+  pool: Pool!
+  token0: Token!
+  token1: Token!
+}

@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { Bundle, Factory, Pool, Swap, Join, Exit, Token } from '../../generated/schema'
+import { Bundle, Factory, Pool, Swap, Join, Exit, Token, PoolWeight, PoolTokensPrice } from '../../generated/schema'
 import { Pool as PoolABI, SwapFeePercentageChanged } from '../../generated/Factory/Pool'
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import {
@@ -9,7 +9,7 @@ import {
   OnExitPoolCall as ExitPoolCall
 } from '../../generated/templates/Pool/Pool'
 import { convertTokenToDecimal, loadTransaction, safeDiv, tokenAmountToDecimal } from '../utils'
-import { FACTORY_ADDRESS, ONE_BI, ZERO_BD } from '../utils/constants'
+import { FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from '../utils/constants'
 import { findBtcPerToken, getBtcPriceInUSD, getTrackedAmountUSD, getTokenPrices } from '../utils/pricing'
 import {
   updatePoolDayData,
@@ -238,6 +238,36 @@ export function handleSwap(call: SwapCall): void {
   pool.save()
   token0.save()
   token1.save()
+
+  let poolWeight = PoolWeight.load(call.to.toHexString() + '#' + call.block.timestamp.toString())
+  if (!poolWeight) {
+    poolWeight = new PoolWeight(call.to.toHexString() + '#' + call.block.timestamp.toString())
+    poolWeight.pool = call.to.toHexString()
+    poolWeight.token0 = token0.id
+    poolWeight.token1 = token1.id
+    poolWeight.weight0 = ZERO_BD
+    poolWeight.weight1 = ZERO_BD
+    poolWeight.timestamp = ZERO_BI
+  }
+  poolWeight.weight0 = pool.weight0
+  poolWeight.weight1 = pool.weight1
+  poolWeight.timestamp = call.block.timestamp
+  poolWeight.save()
+
+  let poolTokensPrice = PoolTokensPrice.load(call.to.toHexString() + '#' + call.block.timestamp.toString())
+  if (!poolTokensPrice) {
+    poolTokensPrice = new PoolTokensPrice(call.to.toHexString() + '#' + call.block.timestamp.toString())
+    poolTokensPrice.pool = call.to.toHexString()
+    poolTokensPrice.token0 = token0.id
+    poolTokensPrice.token1 = token1.id
+    poolTokensPrice.token0Price = ZERO_BD
+    poolTokensPrice.token1Price = ZERO_BD
+    poolTokensPrice.timestamp = ZERO_BI
+  }
+  poolTokensPrice.token0Price = pool.token0Price
+  poolTokensPrice.token1Price = pool.token1Price
+  poolTokensPrice.timestamp = call.block.timestamp
+  poolTokensPrice.save()
 }
 
 export function handleJoinPool(call: JoinPoolCall): void {
@@ -359,6 +389,36 @@ export function handleJoinPool(call: JoinPoolCall): void {
   pool.save()
   factory.save()
   join.save()
+
+  let poolWeight = PoolWeight.load(call.to.toHexString() + '#' + call.block.timestamp.toString())
+  if (!poolWeight) {
+    poolWeight = new PoolWeight(call.to.toHexString() + '#' + call.block.timestamp.toString())
+    poolWeight.pool = call.to.toHexString()
+    poolWeight.token0 = token0.id
+    poolWeight.token1 = token1.id
+    poolWeight.weight0 = ZERO_BD
+    poolWeight.weight1 = ZERO_BD
+    poolWeight.timestamp = ZERO_BI
+  }
+  poolWeight.weight0 = pool.weight0
+  poolWeight.weight1 = pool.weight1
+  poolWeight.timestamp = call.block.timestamp
+  poolWeight.save()
+
+  let poolTokensPrice = PoolTokensPrice.load(call.to.toHexString() + '#' + call.block.timestamp.toString())
+  if (!poolTokensPrice) {
+    poolTokensPrice = new PoolTokensPrice(call.to.toHexString() + '#' + call.block.timestamp.toString())
+    poolTokensPrice.pool = call.to.toHexString()
+    poolTokensPrice.token0 = token0.id
+    poolTokensPrice.token1 = token1.id
+    poolTokensPrice.token0Price = ZERO_BD
+    poolTokensPrice.token1Price = ZERO_BD
+    poolTokensPrice.timestamp = ZERO_BI
+  }
+  poolTokensPrice.token0Price = pool.token0Price
+  poolTokensPrice.token1Price = pool.token1Price
+  poolTokensPrice.timestamp = call.block.timestamp
+  poolTokensPrice.save()
 }
 
 export function handleExitPool(call: ExitPoolCall): void {
@@ -479,6 +539,36 @@ export function handleExitPool(call: ExitPoolCall): void {
   token1.save()
   factory.save()
   exit.save()
+
+  let poolWeight = PoolWeight.load(call.to.toHexString() + '#' + call.block.timestamp.toString())
+  if (!poolWeight) {
+    poolWeight = new PoolWeight(call.to.toHexString() + '#' + call.block.timestamp.toString())
+    poolWeight.pool = call.to.toHexString()
+    poolWeight.token0 = token0.id
+    poolWeight.token1 = token1.id
+    poolWeight.weight0 = ZERO_BD
+    poolWeight.weight1 = ZERO_BD
+    poolWeight.timestamp = ZERO_BI
+  }
+  poolWeight.weight0 = pool.weight0
+  poolWeight.weight1 = pool.weight1
+  poolWeight.timestamp = call.block.timestamp
+  poolWeight.save()
+
+  let poolTokensPrice = PoolTokensPrice.load(call.to.toHexString() + '#' + call.block.timestamp.toString())
+  if (!poolTokensPrice) {
+    poolTokensPrice = new PoolTokensPrice(call.to.toHexString() + '#' + call.block.timestamp.toString())
+    poolTokensPrice.pool = call.to.toHexString()
+    poolTokensPrice.token0 = token0.id
+    poolTokensPrice.token1 = token1.id
+    poolTokensPrice.token0Price = ZERO_BD
+    poolTokensPrice.token1Price = ZERO_BD
+    poolTokensPrice.timestamp = ZERO_BI
+  }
+  poolTokensPrice.token0Price = pool.token0Price
+  poolTokensPrice.token1Price = pool.token1Price
+  poolTokensPrice.timestamp = call.block.timestamp
+  poolTokensPrice.save()
 }
 
 // export function handleJoinPool(call: JoinPoolCall): void {
